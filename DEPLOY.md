@@ -1,6 +1,6 @@
 # 部署
 
-站点在 GitHub：`vibeluvcommerce/lingwang`（private，默认分支 `main`）。
+站点在 GitHub：`vibeluvcommerce/lingwang`（public，默认分支 `main`）。
 服务器上的更新方式就是 **git pull**，不传文件、不打压缩包。
 
 ```
@@ -17,14 +17,14 @@
 # 1) 依赖
 sudo apt-get update && sudo apt-get install -y git nginx
 
-# 2) 克隆（private 仓库，先看下面「认证」一节）
+# 2) 克隆（公开仓库，不需要任何凭据）
 sudo git clone https://github.com/vibeluvcommerce/lingwang.git /opt/server/www/lingwang
 
 # 3) 赋可执行权限
 sudo chmod +x /opt/server/www/lingwang/deploy.sh
 ```
 
-nginx 站点配置里，root 指向这个目录，**并且必须挡掉 `.git`**：
+nginx 站点配置：
 
 ```nginx
 server {
@@ -34,8 +34,14 @@ server {
     root  /opt/server/www/lingwang;
     index index.html;
 
-    # 关键：仓库目录就是站点根，.git 必须挡住，否则源码和远端配置全暴露
+    # 仓库目录就是站点根：.git 绝不能被下载，
+    # 仓库里的 README / DEPLOY / deploy.sh 也不是给访客看的
     location ~ /\. {
+        deny all;
+        access_log off;
+        log_not_found off;
+    }
+    location ~* \.(md|sh|gitignore|gitattributes)$ {
         deny all;
         access_log off;
         log_not_found off;
@@ -57,37 +63,26 @@ sudo /opt/server/www/lingwang/deploy.sh
 
 输出最后一行是新版本 commit。静态文件即时生效，不需要 reload nginx。
 
-## 三、private 仓库怎么认证
+## 三、如果以后改回 private
 
-服务器拉私有仓库需要凭据，二选一：
-
-**A. Deploy key（推荐，只读、只对这一个仓库有效）**
-
-在服务器上生成密钥，然后把公钥贴到 GitHub 仓库的 Settings → Deploy keys（不要勾 Allow write）：
+公开仓库匿名可克隆，不用配凭据。改回 private 后，服务器要在仓库 Settings → Deploy keys 里加一把只读密钥：
 
 ```bash
 sudo ssh-keygen -t ed25519 -N '' -f /root/.ssh/lingwang_deploy
-sudo cat /root/.ssh/lingwang_deploy.pub      # 复制这一行去 GitHub 粘贴
-
-# 配好之后，把 remote 换成 SSH 形式
+sudo cat /root/.ssh/lingwang_deploy.pub        # 粘到 Deploy keys（不要勾 Allow write）
 sudo git -C /opt/server/www/lingwang remote set-url origin \
      git@github.com:vibeluvcommerce/lingwang.git
 ```
 
-如果服务器连不上 `github.com:22`（国内常见），改用 443 端口：
+服务器连不上 `github.com:22` 时，在 `/root/.ssh/config` 里改走 443：
 
-```bash
-# /root/.ssh/config
+```
 Host github.com
     HostName ssh.github.com
     Port 443
     User git
 ```
 
-**B. 把仓库设为 public**
-
-站点本来就是公开的，仓库里也没有任何密钥（见下）。设为 public 后服务器可匿名克隆，上面整节都可以跳过。
-
 ## 四、不要提交的东西
 
-`.gitignore` 已经拦住 `*.key / *.pem / *.crt / *.zip`。证书私钥（比如阿里云下载的 `zhangxinshi.com.key`）**只能放服务器**，通过 `scp` 传一次即可，永远不进 Git。
+`.gitignore` 已拦截 `*.key / *.pem / *.crt / *.zip`。证书私钥（例如阿里云下载的 `zhangxinshi.com.key`）**只放服务器**，用 `scp` 传一次，永远不进 Git —— 仓库现在是公开的，一旦提交就等于公开。
