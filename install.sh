@@ -43,13 +43,13 @@ die()  { printf '\033[31m[install] ERROR\033[0m %s\n' "$*" >&2; exit 1; }
 # 1. 依赖
 # ==========================================================================
 export DEBIAN_FRONTEND=noninteractive
-log "系统：$(. /etc/os-release 2>/dev/null && echo "${PRETTY_NAME:-unknown}")"
+log "系统：$( . /etc/os-release 2>/dev/null && echo "${PRETTY_NAME:-unknown}" || echo unknown )"
 
-for p in git nginx openssl; do
+for p in git nginx openssl curl; do
     dpkg-query -W -f='${Status}' "$p" 2>/dev/null | grep -q "install ok installed" || {
-        log "安装 $p"
+        log "安装缺失依赖"
         apt-get update -qq
-        apt-get install -y -qq git nginx openssl
+        apt-get install -y -qq git nginx openssl curl
         break
     }
 done
@@ -145,6 +145,10 @@ fi
 # 6. 自检
 # ==========================================================================
 CODE="$(curl -sS -o /dev/null -w '%{http_code}' -k -H "Host: $DOMAIN" https://127.0.0.1/ 2>/dev/null || true)"
+if [[ $CODE != "200" ]]; then
+    warn "本机自检没拿到 200（$CODE）。若 nginx 已在跑，检查证书路径与站点根是否为空。"
+fi
+
 cat <<EOF
 
 ────────────────────────────────────────────────────────────────
@@ -157,6 +161,7 @@ cat <<EOF
  私钥      $CERT_KEY（600）
 
  本机 https 自检：HTTP $CODE
+ 外网打不开先查阿里云安全组是否放行 80/443（脚本改不了那一层）
  更新站点：sudo $SITE_DIR/deploy.sh
  续期证书：覆盖 $CERT_DIR 下两个文件后 sudo systemctl reload nginx
 ────────────────────────────────────────────────────────────────

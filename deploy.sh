@@ -22,11 +22,15 @@ die() { printf '\033[31m[deploy] ERROR\033[0m %s\n' "$*" >&2; exit 1; }
 command -v git >/dev/null 2>&1 || die "没装 git：sudo apt-get install -y git"
 
 if [[ ! -d $SITE_DIR/.git ]]; then
+    # 防止指错目录时把别的东西当成站点根
+    if [[ -d $SITE_DIR ]] && [[ -n "$(ls -A "$SITE_DIR" 2>/dev/null)" ]]; then
+        die "$SITE_DIR 非空且不是 git 仓库。
+  里面的东西不会被清理，请先备份移走，或用 SITE_DIR 指向别处。"
+    fi
     log "首次部署：克隆到 $SITE_DIR"
     mkdir -p "$(dirname "$SITE_DIR")"
     git clone --branch "$BRANCH" "$REPO" "$SITE_DIR"
 else
-    [[ -d $SITE_DIR ]] || die "$SITE_DIR 不是 git 仓库，也不是空目录"
     log "拉取 origin/$BRANCH"
 
     # 工作区是要发布的产物，不留本地改动；有意外改动时这里会直接丢弃
