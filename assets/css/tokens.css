@@ -1,0 +1,172 @@
+/* ==========================================================================
+   tokens.css —— 张新仕律师 · 全站设计变量唯一来源
+   色彩 / 字体 / 字号阶梯 / 间距 / 阴影 / 动效，只在这里改
+   调性：Organic × Editorial —— 纸面、墨色、森绿、陶土印章
+   ========================================================================== */
+
+:root {
+  /* ---------- 纸面 · 主色 60% ---------- */
+  --paper:        #F5F0E6;
+  --paper-deep:   #EDE4D3;
+  --paper-raise:  #FCF8F0;
+  --line:         #DCD0BA;
+  --line-soft:    #E9E0CE;
+
+  /* ---------- 墨色 · 文字 ---------- */
+  --ink:          #1F1D18;
+  --ink-2:        #4B463C;
+  --ink-3:        #7C7466;
+
+  /* ---------- 森绿 · 次色 30% ---------- */
+  --forest:       #23443A;
+  --forest-deep:  #16302A;
+  --forest-soft:  #46685C;
+  --forest-wash:  #DDE5DF;
+
+  /* ---------- 陶土 · 强调 10% ---------- */
+  --clay:         #B4552F;
+  --clay-soft:    #D08260;
+  --clay-wash:    #F2DECF;
+  --seal:         #A03A26;
+
+  /* ---------- 夜墨 · 首屏与页头 ----------
+     森绿压到近黑。选绿不选蓝，是与人物照的灰蓝底（#4A5861）错开——
+     同色系会糊成一片，邻近色才有层次：照片是冷灰，底色是冷绿。 */
+  --night:        #0F231D;
+  --night-2:      #14302A;
+  --night-line:   rgba(198, 165, 103, .22);
+  --bone:         #F2EBDB;   /* 夜底上的主文字，不用纯白，避免过曝 */
+  --bone-2:       #C9C4B4;
+  --bone-3:       #8E9A8F;   /* 夜底上的辅助小字 */
+
+  /* ---------- 黄铜 · 夜底专用强调 ----------
+     只在深底出现，浅底不用。面积控制在 5% 以内：细线、编号、小标签。 */
+  --brass:        #C6A567;
+  --brass-soft:   #DCC492;
+  --brass-dim:    rgba(198, 165, 103, .5);
+
+  /* ---------- 字体 ----------
+     中文标题走宋体系（Songti SC / Noto Serif SC），出版物与法度的双重联想；
+     拉丁标题 Fraunces（可变衬线，soft 轴带圆润感，不冷硬）；
+     正文 Instrument Sans + 苹方，克制、易读。
+     中文不使用 Web Font：一套中文字重动辄数百 KB，是首屏体积杀手。 */
+  --font-display: "Fraunces", "Songti SC", "Noto Serif SC", "Source Han Serif SC", "SimSun", Georgia, serif;
+  --font-body:    "Instrument Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono:    "IBM Plex Mono", "SF Mono", "Menlo", monospace;
+
+  /* ---------- 字号阶梯 ----------
+     正文 17px → 小节 48px → 主标题 76px，约 4.5 倍跳跃，不做 1.5 倍的安全牌 */
+  --fs-micro:  0.72rem;
+  --fs-small:  0.84rem;
+  --fs-body:   1.0625rem;
+  --fs-lead:   clamp(1.0625rem, 1.25vw, 1.25rem);
+  --fs-h3:     clamp(1.2rem, 1.55vw, 1.45rem);
+  --fs-h2:     clamp(1.85rem, 3vw, 2.95rem);
+  --fs-h1:     clamp(2.2rem, 4.3vw, 3.9rem);
+  --fs-mega:   clamp(3rem, 6.4vw, 5.6rem);
+
+  /* ---------- 间距 · 8pt 栅格 ---------- */
+  --sp-1: 0.5rem;
+  --sp-2: 1rem;
+  --sp-3: 1.5rem;
+  --sp-4: 2.5rem;
+  --sp-5: 4rem;
+  --sp-6: 6rem;
+  --sp-7: 8rem;
+
+  /* ---------- 形态 ---------- */
+  --radius-s: 3px;
+  --radius-m: 6px;
+  --radius-l: 16px;
+
+  --shadow-card: 0 1px 2px rgba(45, 38, 26, .05), 0 12px 30px -16px rgba(45, 38, 26, .20);
+  --shadow-lift: 0 2px 4px rgba(45, 38, 26, .06), 0 28px 52px -24px rgba(45, 38, 26, .30);
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --wrap: 1240px;
+  --measure: 40em;
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.85;
+  color: var(--ink-2);
+  background-color: var(--paper);
+  /* 纸面氛围：三处极淡的暖光斑 + 边缘压暗，拒绝纯色背景 */
+  background-image:
+    radial-gradient(1100px 640px at 82% -8%, #FCF4E3 0%, rgba(252, 244, 227, 0) 62%),
+    radial-gradient(820px 560px at 4% 10%, #F0E8D6 0%, rgba(240, 232, 214, 0) 58%),
+    radial-gradient(900px 700px at 50% 104%, #E7E4D2 0%, rgba(231, 228, 210, 0) 60%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* 纸张颗粒 —— 叠在最上层，pointer-events 关闭，只做质感 */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: .045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+p { margin: 0; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--clay-wash);
+  color: var(--ink);
+}

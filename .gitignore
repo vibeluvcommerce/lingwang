@@ -1,0 +1,20 @@
+# macOS 压缩包副产物（项目从 Mac 打包过来时带的）
+.DS_Store
+__MACOSX/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 临时产物
+*.tar.gz
+*.log
+
+# 证书与私钥：只放服务器，永不入库
+*.key
+*.pem
+*.crt
+*.cer
+*.pfx
+*.zip
