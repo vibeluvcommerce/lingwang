@@ -12,9 +12,9 @@
 
 set -Eeuo pipefail
 
-SITE_DIR="${SITE_DIR:-/opt/server/www/lingwang}"
+SITE_DIR="${SITE_DIR:-/opt/server/www}"
 BRANCH="${BRANCH:-main}"
-REPO="${REPO:-https://github.com/vibeluvcommerce/lingwang.git}"
+REPO="${REPO:-https://github.com/vibeluvcommerce/lingwang}"
 
 log() { printf '\033[36m[deploy]\033[0m %s\n' "$*"; }
 die() { printf '\033[31m[deploy] ERROR\033[0m %s\n' "$*" >&2; exit 1; }
