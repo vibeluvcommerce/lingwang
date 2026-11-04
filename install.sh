@@ -45,11 +45,32 @@ die()  { printf '\033[31m[install] ERROR\033[0m %s\n' "$*" >&2; exit 1; }
 export DEBIAN_FRONTEND=noninteractive
 log "系统：$( . /etc/os-release 2>/dev/null && echo "${PRETTY_NAME:-unknown}" || echo unknown )"
 
+# 新机器开机后 unattended-upgrades 常占着 dpkg 锁，直接 apt 会失败。
+# 只在「锁被占用」这类错误上重试，其他错误照常抛出。
+apt_retry() {
+    local out tries=0
+    while true; do
+        if out=$("$@" 2>&1); then
+            printf '%s\n' "$out"
+            return 0
+        fi
+        if printf '%s' "$out" | grep -qi 'dpkg frontend lock\|Could not get lock'; then
+            tries=$((tries + 1))
+            (( tries > 24 )) && die "dpkg 锁被占用超过 2 分钟。先手工执行：sudo dpkg --configure -a"
+            log "apt 正被其他进程占用（通常是 unattended-upgrades），等待 5 秒…"
+            sleep 5
+            continue
+        fi
+        printf '%s\n' "$out" >&2
+        return 1
+    done
+}
+
 for p in git nginx openssl curl; do
     dpkg-query -W -f='${Status}' "$p" 2>/dev/null | grep -q "install ok installed" || {
         log "安装缺失依赖"
-        apt-get update -qq
-        apt-get install -y -qq git nginx openssl curl
+        apt_retry apt-get update -qq
+        apt_retry apt-get install -y -qq git nginx openssl curl
         break
     }
 done
