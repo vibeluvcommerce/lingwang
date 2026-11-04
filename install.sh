@@ -20,7 +20,7 @@ set -Eeuo pipefail
 
 DOMAIN="${DOMAIN:-zhangxinshi.com}"
 SITE_DIR="${SITE_DIR:-/opt/server/www}"
-REPO="${REPO:-https://github.com/vibeluvcommerce/lingwang}"
+REPO="${REPO:-https://gitee.com/amz_analysis/lingwang}"
 BRANCH="${BRANCH:-main}"
 CERT_DIR="${CERT_DIR:-/etc/nginx/cert}"
 CERT_CRT="${CERT_CRT:-$CERT_DIR/$DOMAIN.pem}"

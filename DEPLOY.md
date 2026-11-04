@@ -3,10 +3,10 @@
 | 项 | 值 |
 |---|---|
 | 域名 | `zhangxinshi.com`（`www` 301 到主域，`http` 301 到 `https`） |
-| 服务器 | Ubuntu，`47.107.228.15` |
+| 服务器 | Ubuntu 24.04（阿里云，IP 以当前实例为准） |
 | 站点根 | `/opt/server/www`（就是 git 工作区） |
 | 证书 | `/etc/nginx/cert/zhangxinshi.com.pem` + `.key`（阿里云，90 天） |
-| 仓库 | `vibeluvcommerce/lingwang`（public，`main`） |
+| 仓库 | `gitee.com/amz_analysis/lingwang`（public，`main`） |
 
 ```
 本地改页面 → git push
@@ -21,7 +21,7 @@
 **1) 把证书传上去**（本地执行）
 
 ```bash
-scp 28240572_zhangxinshi.com_nginx.zip root@47.107.228.15:/tmp/
+scp 28240572_zhangxinshi.com_nginx.zip root@<服务器IP>:/tmp/
 ```
 
 （服务器上）
@@ -35,7 +35,7 @@ sudo unzip -o /tmp/28240572_zhangxinshi.com_nginx.zip -d /etc/nginx/cert
 
 ```bash
 sudo apt-get install -y git
-sudo git clone https://github.com/vibeluvcommerce/lingwang /opt/server/www
+sudo git clone https://gitee.com/amz_analysis/lingwang /opt/server/www
 sudo chmod +x /opt/server/www/install.sh
 sudo /opt/server/www/install.sh
 ```
