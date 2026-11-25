@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="300" viewBox="0 0 1400 300">
+  <g fill="none" stroke="#C5A365" stroke-width="3">
+    <rect x="18" y="38" width="214" height="214" rx="12"/>
+  </g>
+  <text x="125" y="200" text-anchor="middle" font-family="Noto Serif CJK SC, Songti SC, serif" font-size="148" fill="#C5A365">张</text>
+  <path d="M188 203h30 M203 188v30" stroke="#C5A365" stroke-width="5" stroke-linecap="square"/>
+  <path d="M276 42V254" stroke="#C5A365" stroke-width="1.5" opacity=".8"/>
+  <text x="326" y="139" font-family="Noto Serif CJK SC, Songti SC, serif" font-size="78" letter-spacing="8" fill="#EAE5D8">张新仕律师</text>
+  <text x="331" y="205" font-family="Noto Sans CJK SC, Microsoft YaHei, sans-serif" font-size="32" letter-spacing="7" fill="#C5A365">广东领望律师事务所</text>
+  <path d="M331 226H875" stroke="#C5A365" stroke-width="1" opacity=".45"/>
+</svg>
