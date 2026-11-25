@@ -186,40 +186,13 @@
   flex: none;
 }
 
-/* 方框「张」标记 —— 从品牌组合标裁出（透明底，源图 436×436），
-   姓名与律所名用 HTML 文本而不是整张组合标：组合标里的律所名只占字高 10%，
-   缩到 42px 会糊成 3px；文本还能被搜索抓取。 */
-.brand-mark {
+/* 品牌组合标：横版 lockup（方框「张」+ 竖线 + 姓名 + 律所名），
+   直接用品牌包提供的原图，不拆分、不改字。 */
+.brand-logo {
   display: block;
+  height: 64px;
+  width: auto;
   flex: none;
-}
-
-.brand-mark img {
-  display: block;
-  width: 42px;
-  height: 42px;
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  line-height: 1.25;
-}
-
-.brand-text strong {
-  font-family: var(--font-display);
-  font-size: 1.16rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  color: var(--bone);
-}
-
-.brand-text em {
-  font-style: normal;
-  font-size: 0.68rem;
-  letter-spacing: .14em;
-  color: var(--bone-3);
 }
 
 /* 主导航 */
@@ -2298,9 +2271,6 @@
   padding-bottom: var(--sp-5);
 }
 
-.foot-brand .brand-text strong { color: #F1EDE1; }
-.foot-brand .brand-text em { color: #8FA196; }
-
 .foot-brand p {
   margin-top: 20px;
   font-size: 0.86rem;
@@ -2594,7 +2564,7 @@
   }
 
   .head-inner { min-height: 76px; }
-  .brand-mark img { width: 36px; height: 36px; }
+  .brand-logo { height: 44px; }
 
   /* Hero 转 flex，避免 grid 留下空格 */
   .hero-grid { display: flex; flex-direction: column; gap: 2.6rem; }
